@@ -1,11 +1,9 @@
 # encoding: utf-8
 
 require 'ruby-prof'
-require 'new_relic/agent/instrumentation/controller_instrumentation'
 
 module HireFireApp
   class Middleware
-    newrelic_ignore
 
     ##
     # Initialize the Rack Middleware by setting the app instance
