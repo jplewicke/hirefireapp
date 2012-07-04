@@ -12,6 +12,7 @@ module HireFireApp
     def initialize(app)
       @app   = app
       @token = ENV['HIREFIREAPP_TOKEN']
+      @do_not_trace = true
     end
 
     ##
