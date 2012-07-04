@@ -22,7 +22,7 @@ module HireFireApp
       RubyProf.start
       @env = env
 
-      if test?
+      result = if test?
         [ 200, {'Content-Type' => 'text/html'}, self ]
       elsif info?
         [ 200, {'Content-Type' => 'application/json'}, self ]
@@ -30,11 +30,12 @@ module HireFireApp
         @app.call(env)
       end
       
-      result = RubyProf.stop
+      runresult = RubyProf.stop
 
       # Print a flat profile to text
-      printer = RubyProf::FlatPrinter.new(result)
+      printer = RubyProf::FlatPrinter.new(runresult)
       printer.print(STDOUT)
+      result
     end
 
     ##
