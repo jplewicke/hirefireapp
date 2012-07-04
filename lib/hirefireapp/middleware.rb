@@ -44,7 +44,9 @@ module HireFireApp
     # in JSON format.
     #
     def each(&block)
-      if test?
+      
+      RubyProf.start
+      result = if test?
         out =  "\n"
         out << "[HireFire][Web]    OK\n"
         out << "[HireFire][Worker] #{worker_ok} (Library: #{worker_library}, Mapper: #{mapper_library})\n\n"
@@ -59,6 +61,14 @@ module HireFireApp
       elsif info?
         block.call %|{"job_count":#{job_count || "null"}}|
       end
+      
+      
+      runresult = RubyProf.stop
+
+      # Print a flat profile to text
+      printer = RubyProf::FlatPrinter.new(runresult)
+      printer.print(STDOUT)
+      result
     end
 
     private
