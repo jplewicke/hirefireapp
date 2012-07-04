@@ -1,5 +1,7 @@
 # encoding: utf-8
 
+require 'ruby-prof'
+
 module HireFireApp
   class Middleware
 
@@ -17,6 +19,7 @@ module HireFireApp
     # Return a JSON requested if the "info url" has been requested.
     #
     def call(env)
+      RubyProf.start
       @env = env
 
       if test?
@@ -26,6 +29,12 @@ module HireFireApp
       else
         @app.call(env)
       end
+      
+      result = RubyProf.stop
+
+      # Print a flat profile to text
+      printer = RubyProf::FlatPrinter.new(result)
+      printer.print(STDOUT)
     end
 
     ##
